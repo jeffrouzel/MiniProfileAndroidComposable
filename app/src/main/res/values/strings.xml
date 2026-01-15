@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MiniProfileAndroidComposable</string>
+    <string name="user_icon">Me</string>
+</resources>
