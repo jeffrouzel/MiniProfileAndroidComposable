@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MiniProfileAndroidComposable</string>
     <string name="user_icon">Me</string>
+    <string name="arrowRight_desc">Go to fragment</string>
 </resources>
