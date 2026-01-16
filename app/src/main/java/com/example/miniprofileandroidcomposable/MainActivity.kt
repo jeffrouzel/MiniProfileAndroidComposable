@@ -112,7 +112,7 @@ val userNameStyle = TextStyle(
     color = Color.Black
 )
 val userImageModifier = Modifier
-    .size(150.dp) // Set a specific size
+    .size(150.dp)
     .clip(CircleShape)
 
 
@@ -167,7 +167,7 @@ fun MiniProfileSettings(navController: NavController){
                           },
                 colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Red,
-                contentColor = Color.White // or whatever color you want for the icon
+                contentColor = Color.White
             )) {
                 Text(text = "Logout")
             }}
@@ -183,8 +183,8 @@ fun UserDetails(navController: NavController){
         Image(
             painter = painterResource(id = R.drawable.user_icon),
             contentDescription = stringResource(id = R.string.user_icon),
-            modifier = userImageModifier, // This makes it round
-            contentScale = ContentScale.Crop // Important: Crops the image to fill the circle
+            modifier = userImageModifier,                         // makes it round
+            contentScale = ContentScale.Crop                      //Crops the image to fill the circle
         )
         Text(text = "Jeff Rouzel Bat-og", style = userNameStyle)
         Text(text = "jbatog2@77global.biz", style = textLabelStyle)
@@ -205,7 +205,7 @@ fun InfoSettings(textlbl: String, navController: NavController, route: String){
             Button(onClick = { navController.navigate(route) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
-                    contentColor = Color.Black // or whatever color you want for the icon
+                    contentColor = Color.Black
                 )
             ) {Icon(painter = painterResource(id = R.drawable.arrow_right),
                 contentDescription = stringResource(id = R.string.arrowRight_desc),
