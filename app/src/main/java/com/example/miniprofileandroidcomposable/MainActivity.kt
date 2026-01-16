@@ -35,31 +35,53 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Header()
+            AppNavigation()
         }
+    }
+}
+
+// I learned that this is the newer way for navigation in compose rather than the use of fragments
+@Composable
+fun AppNavigation() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "home") {
+        composable("home") { MiniProfileSettings(navController) }
+        composable("profile") { ProfileScreen(navController) }
+        composable("personal_info") { PersonalInformationScreen(navController) }
+        composable("notification") { NotificationScreen(navController) }
+        composable("time_spent") { TimeSpentScreen(navController) }
+        composable("following") { FollowingScreen(navController) }
+        composable("privacy") { PrivacyPolicyScreen(navController) }
+        composable("terms") { TermsScreen(navController) }
+        composable("faq") { FAQScreen(navController) }
     }
 }
 
 ///////////////////////////////////////////////////////////////
 // EDITS
-data class AS(val name: String)
-data class HAS(val name: String)
+data class AS(val name: String, val route: String)
+data class HAS(val name: String, val route: String)
 
 val accountSettings = listOf(
-    AS("Personal Information"),
-    AS("Notification"),
-    AS("Time Spent"),
-    AS("Following")
+    AS("Personal Information", "personal_info"),
+    AS("Notification", "notification"),
+    AS("Time Spent", "time_spent"),
+    AS("Following", "following")
 )
 val helpAndSupport = listOf(
-    HAS("Privacy Policy"),
-    HAS("Terms and Conditions"),
-    HAS("FAQ and Help")
+    HAS("Privacy Policy", "privacy"),
+    HAS("Terms and Conditions", "terms"),
+    HAS("FAQ and Help", "faq")
 )
 ///////////////////////////////////////////////////////////////
 // Styling
@@ -109,7 +131,7 @@ val openInfoButtonModifier = Modifier
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Header(){
+fun MiniProfileSettings(navController: NavController){
     Scaffold (
         topBar ={
             TopAppBar(title= {Text("Mini Profile Android")})
@@ -117,18 +139,18 @@ fun Header(){
     ) {
         LazyColumn (modifier = Modifier.padding(15.dp, 75.dp, 15.dp, 15.dp )) {
             //
-            item{ UserDetails() }
+            item{ UserDetails(navController) }
             // Account Settings
             item{Spacer(modifier = spacerNormalVerticalModifier)}
             item{Text("Account Settings" , style = textLabelStyle)}
             items(accountSettings){ accountSettings ->
-                InfoSettings(accountSettings.name)
+                InfoSettings(accountSettings.name, navController, accountSettings.route)
             }
             // Help and Support Settings
             item{Spacer(modifier = spacerNormalVerticalModifier)}
             item{Text("Help and Support", style = textLabelStyle)}
             items(helpAndSupport){ helpAndSupport ->
-                InfoSettings(helpAndSupport.name)
+                InfoSettings(helpAndSupport.name, navController, helpAndSupport.route)
             }
             // Log Out Button
             item{Spacer(modifier = spacerNormalVerticalModifier)}
@@ -144,7 +166,7 @@ fun Header(){
 }
 
 @Composable
-fun UserDetails(){
+fun UserDetails(navController: NavController){
     Column (modifier = spaceFillerHeightModifier,
         verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally){
@@ -156,21 +178,21 @@ fun UserDetails(){
         )
         Text(text = "Jeff Rouzel Bat-og", style = userNameStyle)
         Text(text = "jbatog2@77global.biz", style = textLabelStyle)
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = { navController.navigate("profile") }) {
             Text(text = "View Profile")
         }
     }
 }
 
 @Composable
-fun InfoSettings(textlbl: String){
+fun InfoSettings(textlbl: String, navController: NavController, route: String){
     Row{
         Spacer(modifier = spacerSmallHorizontalModifier)
         Row (horizontalArrangement = Arrangement.SpaceBetween, modifier = spaceFillerWidthModifier){
             Text(text = textlbl,
                 modifier = textInformationModifier,
                 style = textInformationStyle)
-            Button(onClick = { /*TODO*/ },
+            Button(onClick = { navController.navigate(route) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
                     contentColor = Color.Black // or whatever color you want for the icon
