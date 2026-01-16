@@ -2,6 +2,7 @@ package com.example.miniprofileandroidcomposable
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -49,7 +51,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// I learned that this is the newer way for navigation in compose rather than the use of fragments
+// I learned that using fragments is mostly used for older implementations (.xml)
+// with that I stumbled upon Navigation of Compose which is the newer way to implement
+// pages, and i thought it was much easier as it uses only one file for several screens
+// instead of using fragments which will create a file for each screen
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
@@ -132,12 +137,14 @@ val openInfoButtonModifier = Modifier
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MiniProfileSettings(navController: NavController){
+    val context = LocalContext.current
     Scaffold (
         topBar ={
             TopAppBar(title= {Text("Mini Profile Android")})
         }
     ) {
-        LazyColumn (modifier = Modifier.padding(15.dp, 75.dp, 15.dp, 15.dp )) {
+        LazyColumn (modifier = Modifier
+            .padding(15.dp, 75.dp, 15.dp, 15.dp )) {
             //
             item{ UserDetails(navController) }
             // Account Settings
@@ -154,7 +161,10 @@ fun MiniProfileSettings(navController: NavController){
             }
             // Log Out Button
             item{Spacer(modifier = spacerNormalVerticalModifier)}
-            item{Button(onClick = { /*TODO*/ },
+            item{Button(
+                onClick = {
+                Toast.makeText(context, "You are logged out", Toast.LENGTH_SHORT).show()
+                          },
                 colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Red,
                 contentColor = Color.White // or whatever color you want for the icon
@@ -205,3 +215,12 @@ fun InfoSettings(textlbl: String, navController: NavController, route: String){
         }
     }
 }
+
+
+
+// Useful for future implementations
+
+//  For Logout, clearing all screens, going back to login
+//        navController.navigate("screen for login") {
+//            popUpTo("screen for login") { inclusive = true }
+//        }
