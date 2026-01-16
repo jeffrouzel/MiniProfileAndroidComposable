@@ -72,18 +72,24 @@ val helpAndSupport = listOf(
 )
 
 // Modifiers
+// TEXT INFORMATION
 val textInformationModifier = Modifier
     .padding(
-        horizontal = dimensionResource(id = R.dimen.small_space),
-        vertical = dimensionResource(id = R.dimen.small_space)
+        horizontal = (8.dp),
+        vertical = (8.dp)
     )
 
 val textInformationStyle = TextStyle(
-    fontSize = dimensionResource(id = R.dimen.medium_text),
+    fontSize = (24.sp),
     color = Color.Black
 )
+// TEXT LABEL
+val textLabelStyle = TextStyle(
+    fontSize = (16.sp),
+    color = Color.Gray
+)
 
-
+// Composables
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -97,15 +103,17 @@ fun Header(){
             //
             item{ UserDetails() }
             // Account Settings
-            item{Text("Account Settings")}
+            item{Spacer(modifier = Modifier.height(20.dp))}
+            item{Text("Account Settings" , style = textLabelStyle)}
             items(accountSettings){ accountSettings ->
                 Text(text = accountSettings.name,
-                modifier = textInformationModifier,
-                style = textInformationStyle)
-
+                    modifier = textInformationModifier,
+                    style = textInformationStyle
+                    )
             }
             // Help and Support Settings
-            item{Text("Help and Support")}
+            item{Spacer(modifier = Modifier.height(20.dp))}
+            item{Text("Help and Support", style = textLabelStyle)}
             items(helpAndSupport){ helpAndSupport ->
                 Text(text = helpAndSupport.name,
                     modifier = textInformationModifier,
@@ -113,6 +121,7 @@ fun Header(){
 
             }
             // Log Out Button
+            item{Spacer(modifier = Modifier.height(20.dp))}
             item{Button(onClick = { /*TODO*/ }) {
                 Text(text = "Logout")
             }}
@@ -122,7 +131,10 @@ fun Header(){
 
 @Composable
 fun UserDetails(){
-    Column (modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally){
+    Column (modifier = Modifier
+        .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(5.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally){
         Image(
             painter = painterResource(id = R.drawable.user_icon),
             contentDescription = stringResource(id = R.string.user_icon),
